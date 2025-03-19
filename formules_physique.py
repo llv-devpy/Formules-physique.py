@@ -213,18 +213,24 @@ def main():
                     print("34. Convertir le volume")
                     print("35. Convertir l'aire")
                     print("36. Convertir la masse volumique")
-                    print("37. retour au debut")
+                    print("37. Suggerer une formule ou amelioration.")
+                    print("38. retour au debut")
                     choix = input("Entrez votre choix: ")
                     try:
                         choix = int(choix)
                     except ValueError:
                         print("Choix invalide")
                         main()
-                    if choix < 28 or choix > 36 and choix != 38:
+                    if choix < 28 or choix > 36 and choix != 38 and choix !=37:
                         print("Choix invalide.")
                         main()
-                    elif choix == 37:
+                    elif choix == 38:
                         main()
+                    elif choix == 37:
+                    	print("Pour suggerer quelque chose au developeur, allez sur ce lien :")
+                    	print(" https://github.com/llv-devpy\n/Formules-physique.py/issues")
+                    	print(" et creez y un issue.")
+                    	input("appuyer sur 1 pour continuer...")
         
 
 
