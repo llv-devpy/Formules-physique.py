@@ -138,6 +138,32 @@ def convertir_masse_volumique(valeur, unite_source, unite_cible):
     }
     return valeur * conversion[unite_source] / conversion[unite_cible]
 
+def conv(valeur,unite_source,unite_cible):
+    # Définition des exposants des puissances de 10 pour chaque unité
+    exposants = {
+        1: 9,   # Giga (10^9)
+        2: 6,   # Méga (10^6)
+        3: 3,   # Kilo (10^3)
+        4: 2,   # Hecto (10^2)
+        5: 1,   # Deca (10^1)
+        6: 0,   # Base (10^0)
+        7: -1,  # Déci (10^-1)
+        8: -2,  # Centi (10^-2)
+        9: -3   # Milli (10^-3)
+    }
+    
+    if unite_source not in exposants or unite_cible not in exposants:
+        print("Unité incorrecte")
+        return
+    
+    # Correction du calcul du facteur de conversion
+    facteur_conversion = 10 ** (exposants[unite_cible] - exposants[unite_source])
+    
+    # Conversion
+    valeur_convertie = valeur * facteur_conversion
+    return valeur_convertie
+    
+
 def main():
     while True:
         print("1. Calculer la vitesse")
@@ -149,7 +175,7 @@ def main():
         print("7. Calculer le poids")
         print("8. Calculer la masse a partir du poids")
         print("9. Calculer la gravite")
-        print("38. Suivant")
+        print("0. Suivant")
         choix = input("Entrez votre choix: ")
         try: 
             choix = int(choix)
@@ -157,11 +183,11 @@ def main():
             print("Choix invalide.")
             main()
 
-        if choix < 1 or choix > 9 and choix != 38:
+        if choix < 0 or choix > 9 :
             print("Choix invalide.")
             main()
 
-        elif choix == 38:
+        elif choix == 0:
             print("10. Calculer l'energie cinetique")
             print("11. Calculer la masse a partir de l'energie cinetique")
             print("12. Calculer la vitesse a partir de l'energie cinetique")
@@ -171,7 +197,7 @@ def main():
             print("16. Calculer la puissance")
             print("17. Calculer la tension")
             print("18. Calculer le courant")
-            print("38. Suivant")
+            print("0. Suivant")
             choix = input("Entrez votre choix: ")
             try:
                 choix = int(choix)
@@ -179,10 +205,10 @@ def main():
                 print("Choix invalide")
                 main()
 
-            if choix < 10 or choix > 18 and choix != 38:
+            if choix < 10  and choix != 0 or choix > 18:
                 print("Choix invalide.")
                 main()
-            elif choix == 38:
+            elif choix == 0:
                 print("19. Calculer l'energie")
                 print("20. Calculer la puissance")
                 print("21. Calculer le temps")
@@ -192,7 +218,7 @@ def main():
                 print("25. Calculer l'angle de refraction")
                 print("26. Calculer la concentration en masse")
                 print("27. Calculer la masse du solute")
-                print("38. Suivant")
+                print("0. Suivant")
                 choix = input("Entrez votre choix: ")
                 try:
                     choix = int(choix)
@@ -200,10 +226,10 @@ def main():
                     print("Choix invalide")
                     main()
 
-                if choix < 19 or choix > 27 and choix != 38:
+                if choix < 19  and choix != 0 or choix > 27 :
                     print("Choix invalide.")
                     main()
-                elif choix == 38:
+                elif choix == 0:
                     print("28. Calculer le volume de la solution")
                     print("29. Calculer la concentration finale")
                     print("30. Calculer le volume initial")
@@ -213,264 +239,423 @@ def main():
                     print("34. Convertir le volume")
                     print("35. Convertir l'aire")
                     print("36. Convertir la masse volumique")
-                    print("37. Suggerer une formule ou amelioration.")
-                    print("38. retour au debut")
+                    print("0. suivant")
                     choix = input("Entrez votre choix: ")
                     try:
                         choix = int(choix)
                     except ValueError:
                         print("Choix invalide")
                         main()
-                    if choix < 28 or choix > 36 and choix != 38 and choix !=37:
+                    if choix < 28  and choix != 0 or choix > 36:
                         print("Choix invalide.")
                         main()
-                    elif choix == 38:
-                        main()
-                    elif choix == 37:
-                    	print("Pour suggerer quelque chose au developeur, allez sur ce lien :")
-                    	print(" https://github.com/llv-devpy\n/Formules-physique.py/issues")
-                    	print(" et creez y un issue.")
-                    	input("appuyer sur 1 pour continuer...")
+
+                    elif choix == 0:
+                        print("37. conversion d'unité normales (ex : kilo vers mili)")
+                        print("38. suggérer une amélioration au développeur")
+                        print("0. retour au début")
+                        choix = input("Entrez votre choix: ")
+                        try:
+                            choix = int(choix)
+                        except ValueError:
+                            print("choix invalide")
+                            main()
+                        if choix == 0:
+                            main()
+                        elif choix < 37 and choix != 0 or choix > 38:
+                            print("Choix invalide.")
+                            main()
+                        
+                    
+
         
 
 
         if choix == 1:
-            d = float(input("Entrez la distance (d): "))
-            T = float(input("Entrez le temps (T): "))
-            v = vitesse(d, T)
-            print("La vitesse est", v, "unites de distance par unite de temps.")
+            try:
+                d = float(input("Entrez la distance (d): "))
+                T = float(input("Entrez le temps (T): "))
+                v = vitesse(d, T)
+                print("La vitesse est", v, "unites de distance par unite de temps.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 2:
-            v = float(input("Entrez la vitesse (v): "))
-            T = float(input("Entrez le temps (T): "))
-            d = distance(v, T)
-            print("La distance est", d, "unites de distance.")
+            try:
+                v = float(input("Entrez la vitesse (v): "))
+                T = float(input("Entrez le temps (T): "))
+                d = distance(v, T)
+                print("La distance est", d, "unites de distance.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 3:
-            d = float(input("Entrez la distance (d): "))
-            v = float(input("Entrez la vitesse (v): "))
-            T = temps(d, v)
-            print("Le temps est", T, "unites de temps.")
+            try:
+                d = float(input("Entrez la distance (d): "))
+                v = float(input("Entrez la vitesse (v): "))
+                T = temps(d, v)
+                print("Le temps est", T, "unites de temps.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 4:
-            m = float(input("Entrez la masse (m): "))
-            V = float(input("Entrez le volume (V): "))
-            ρ = masse_volumique(m, V)
-            print("La masse volumique est", ρ, "unites de masse par unite de volume.")
+            try:
+                m = float(input("Entrez la masse (m): "))
+                V = float(input("Entrez le volume (V): "))
+                ρ = masse_volumique(m, V)
+                print("La masse volumique est", ρ, "unites de masse par unite de volume.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 5:
-            ρ = float(input("Entrez la masse volumique (ρ): "))
-            V = float(input("Entrez le volume (V): "))
-            m = masse(ρ, V)
-            print("La masse est", m, "unites de masse.")
+            try:
+                ρ = float(input("Entrez la masse volumique (ρ): "))
+                V = float(input("Entrez le volume (V): "))
+                m = masse(ρ, V)
+                print("La masse est", m, "unites de masse.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 6:
-            m = float(input("Entrez la masse (m): "))
-            ρ = float(input("Entrez la masse volumique (ρ): "))
-            V = volume(m, ρ)
-            print("Le volume est", V, "unites de volume.")
+            try:
+                m = float(input("Entrez la masse (m): "))
+                ρ = float(input("Entrez la masse volumique (ρ): "))
+                V = volume(m, ρ)
+                print("Le volume est", V, "unites de volume.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 7:
-            m = float(input("Entrez la masse (m): "))
-            use_default_g = input("Voulez-vous utiliser la gravite par defaut (9.81) ? (oui/non): ").strip().lower()
-            if use_default_g == 'non':
-                g = float(input("Entrez la gravite (g): "))
-            else:
-                g = 9.81
-            P = poids(m, g)
-            print("Le poids est", P, "unites de force.")
+            try:
+                m = float(input("Entrez la masse (m): "))
+                use_default_g = input("Voulez-vous utiliser la gravite par defaut (9.81) ? (oui/non): ").strip().lower()
+                if use_default_g == 'non':
+                    g = float(input("Entrez la gravite (g): "))
+                else:
+                    g = 9.81
+                P = poids(m, g)
+                print("Le poids est", P, "unites de force.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 8:
-            P = float(input("Entrez le poids (P): "))
-            use_default_g = input("Voulez-vous utiliser la gravite par defaut (9.81) ? (oui/non): ").strip().lower()
-            if use_default_g == 'non':
-                g = float(input("Entrez la gravite (g): "))
-            else:
-                g = 9.81
-            m = masse_from_poids(P, g)
-            print("La masse est", m, "unites de masse.")
+            try:
+                P = float(input("Entrez le poids (P): "))
+                use_default_g = input("Voulez-vous utiliser la gravite par defaut (9.81) ? (oui/non): ").strip().lower()
+                if use_default_g == 'non':
+                    g = float(input("Entrez la gravite (g): "))
+                else:
+                    g = 9.81
+                m = masse_from_poids(P, g)
+                print("La masse est", m, "unites de masse.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 9:
-            P = float(input("Entrez le poids (P): "))
-            m = float(input("Entrez la masse (m): "))
-            g = gravite(P, m)
-            print("La gravite est", g, "unites de gravite.")
+            try:
+                P = float(input("Entrez le poids (P): "))
+                m = float(input("Entrez la masse (m): "))
+                g = gravite(P, m)
+                print("La gravite est", g, "unites de gravite.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 10:
-            m = float(input("Entrez la masse (m): "))
-            v = float(input("Entrez la vitesse (v): "))
-            E_c = energie_cinetique(m, v)
-            print("L'energie cinetique est", E_c, "unites d'energie.")
+            try:
+                m = float(input("Entrez la masse (m): "))
+                v = float(input("Entrez la vitesse (v): "))
+                E_c = energie_cinetique(m, v)
+                print("L'energie cinetique est", E_c, "unites d'energie.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 11:
-            E_c = float(input("Entrez l'energie cinetique (E_c): "))
-            v = float(input("Entrez la vitesse (v): "))
-            m = masse_from_energie_cinetique(E_c, v)
-            print("La masse est", m, "unites de masse.")
+            try:
+                E_c = float(input("Entrez l'energie cinetique (E_c): "))
+                v = float(input("Entrez la vitesse (v): "))
+                m = masse_from_energie_cinetique(E_c, v)
+                print("La masse est", m, "unites de masse.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 12:
-            E_c = float(input("Entrez l'energie cinetique (E_c): "))
-            m = float(input("Entrez la masse (m): "))
-            v = vitesse_from_energie_cinetique(E_c, m)
-            print("La vitesse est", v, "unites de vitesse.")
+            try:
+                E_c = float(input("Entrez l'energie cinetique (E_c): "))
+                m = float(input("Entrez la masse (m): "))
+                v = vitesse_from_energie_cinetique(E_c, m)
+                print("La vitesse est", v, "unites de vitesse.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 13:
-            i = float(input("Entrez le courant (I): "))
-            r = float(input("Entrez la resistance (R): "))
-            u = loi_ohm_u(i, r)
-            print("La tension est", u, "volts.")
+            try:
+                i = float(input("Entrez le courant (I): "))
+                r = float(input("Entrez la resistance (R): "))
+                u = loi_ohm_u(i, r)
+                print("La tension est", u, "volts.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 14:
-            u = float(input("Entrez la tension (U): "))
-            r = float(input("Entrez la resistance (R): "))
-            i = loi_ohm_i(u, r)
-            print("Le courant est", i, "amperes.")
+            try:
+                u = float(input("Entrez la tension (U): "))
+                r = float(input("Entrez la resistance (R): "))
+                i = loi_ohm_i(u, r)
+                print("Le courant est", i, "amperes.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 15:
-            u = float(input("Entrez la tension (U): "))
-            i = float(input("Entrez le courant (I): "))
-            r = loi_ohm_r(u, i)
-            print("La resistance est", r, "ohms.")
+            try:
+                u = float(input("Entrez la tension (U): "))
+                i = float(input("Entrez le courant (I): "))
+                r = loi_ohm_r(u, i)
+                print("La resistance est", r, "ohms.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 16:
-            u = float(input("Entrez la tension (U): "))
-            i = float(input("Entrez le courant (I): "))
-            p = puissance_p(u, i)
-            print("La puissance est", p, "watts.")
+            try:
+                u = float(input("Entrez la tension (U): "))
+                i = float(input("Entrez le courant (I): "))
+                p = puissance_p(u, i)
+                print("La puissance est", p, "watts.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 17:
-            p = float(input("Entrez la puissance (P): "))
-            i = float(input("Entrez le courant (I): "))
-            u = puissance_u(p, i)
-            print("La tension est", u, "volts.")
+            try:
+                p = float(input("Entrez la puissance (P): "))
+                i = float(input("Entrez le courant (I): "))
+                u = puissance_u(p, i)
+                print("La tension est", u, "volts.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 18:
-            p = float(input("Entrez la puissance (P): "))
-            u = float(input("Entrez la tension (U): "))
-            i = puissance_i(p, u)
-            print("Le courant est", i, "amperes.")
+            try:
+                p = float(input("Entrez la puissance (P): "))
+                u = float(input("Entrez la tension (U): "))
+                i = puissance_i(p, u)
+                print("Le courant est", i, "amperes.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 19:
-            p = float(input("Entrez la puissance (P): "))
-            t = float(input("Entrez le temps (t): "))
-            e = energie_e(p, t)
-            print("L'energie est", e, "joules.")
+            try:
+                p = float(input("Entrez la puissance (P): "))
+                t = float(input("Entrez le temps (t): "))
+                e = energie_e(p, t)
+                print("L'energie est", e, "joules.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 20:
-            e = float(input("Entrez l'energie (E): "))
-            t = float(input("Entrez le temps (t): "))
-            p = energie_p(e, t)
-            print("La puissance est", p, "watts.")
+            try:
+                e = float(input("Entrez l'energie (E): "))
+                t = float(input("Entrez le temps (t): "))
+                p = energie_p(e, t)
+                print("La puissance est", p, "watts.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 21:
-            e = float(input("Entrez l'energie (E): "))
-            p = float(input("Entrez la puissance (P): "))
-            t = energie_t(e, p)
-            print("Le temps est", t, "secondes.")
+            try:
+                e = float(input("Entrez l'energie (E): "))
+                p = float(input("Entrez la puissance (P): "))
+                t = energie_t(e, p)
+                print("Le temps est", t, "secondes.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 22:
-            n2 = float(input("Entrez l'indice de refraction n2: "))
-            angle2 = float(input("Entrez l'angle de refraction (angle2) en degres: "))
-            angle1 = float(input("Entrez l'angle d'incidence (angle1) en degres: "))
-            n1 = snell_descartes_n1(n2, angle2, angle1)
-            print("L'indice de refraction n1 est", n1)
+            try:
+                n2 = float(input("Entrez l'indice de refraction n2: "))
+                angle2 = float(input("Entrez l'angle de refraction (angle2) en degres: "))
+                angle1 = float(input("Entrez l'angle d'incidence (angle1) en degres: "))
+                n1 = snell_descartes_n1(n2, angle2, angle1)
+                print("L'indice de refraction n1 est", n1)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 23:
-            n1 = float(input("Entrez l'indice de refraction n1: "))
-            angle1 = float(input("Entrez l'angle d'incidence (angle1) en degres: "))
-            angle2 = float(input("Entrez l'angle de refraction (angle2) en degres: "))
-            n2 = snell_descartes_n2(n1, angle1, angle2)
-            print("L'indice de refraction n2 est", n2)
+            try:
+                n1 = float(input("Entrez l'indice de refraction n1: "))
+                angle1 = float(input("Entrez l'angle d'incidence (angle1) en degres: "))
+                angle2 = float(input("Entrez l'angle de refraction (angle2) en degres: "))
+                n2 = snell_descartes_n2(n1, angle1, angle2)
+                print("L'indice de refraction n2 est", n2)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 24:
-            n1 = float(input("Entrez l'indice de refraction n1: "))
-            n2 = float(input("Entrez l'indice de refraction n2: "))
-            angle2 = float(input("Entrez l'angle de refraction (angle2) en degres: "))
-            angle1 = snell_descartes_angle1(n1, n2, angle2)
-            print("L'angle d'incidence (angle1) est", angle1, "degres.")
+            try:
+                n1 = float(input("Entrez l'indice de refraction n1: "))
+                n2 = float(input("Entrez l'indice de refraction n2: "))
+                angle2 = float(input("Entrez l'angle de refraction (angle2) en degres: "))
+                angle1 = snell_descartes_angle1(n1, n2, angle2)
+                print("L'angle d'incidence (angle1) est", angle1, "degres.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 25:
-            n1 = float(input("Entrez l'indice de refraction n1: "))
-            n2 = float(input("Entrez l'indice de refraction n2: "))
-            angle1 = float(input("Entrez l'angle d'incidence (angle1) en degres: "))
-            angle2 = snell_descartes_angle2(n1, n2, angle1)
-            print("L'angle de refraction (angle2) est", angle2, "degres.")
+            try:
+                n1 = float(input("Entrez l'indice de refraction n1: "))
+                n2 = float(input("Entrez l'indice de refraction n2: "))
+                angle1 = float(input("Entrez l'angle d'incidence (angle1) en degres: "))
+                angle2 = snell_descartes_angle2(n1, n2, angle1)
+                print("L'angle de refraction (angle2) est", angle2, "degres.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 26:
-            masse_solute = float(input("Entrez la masse du solute (m): "))
-            volume_solution = float(input("Entrez le volume de la solution (V): "))
-            concentration = concentration_masse(masse_solute, volume_solution)
-            print("La concentration en masse est", concentration, "unites de masse par unite de volume.")
+            try:
+                masse_solute = float(input("Entrez la masse du solute (m): "))
+                volume_solution = float(input("Entrez le volume de la solution (V): "))
+                concentration = concentration_masse(masse_solute, volume_solution)
+                print("La concentration en masse est", concentration, "unites de masse par unite de volume.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 27:
-            concentration = float(input("Entrez la concentration en masse (C): "))
-            volume_solution = float(input("Entrez le volume de la solution (V): "))
-            masse_solute = masse_solute(concentration, volume_solution)
-            print("La masse du solute est", masse_solute, "unites de masse.")
+            try:
+                concentration = float(input("Entrez la concentration en masse (C): "))
+                volume_solution = float(input("Entrez le volume de la solution (V): "))
+                masse_solute = masse_solute(concentration, volume_solution)
+                print("La masse du solute est", masse_solute, "unites de masse.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 28:
-            masse_solute = float(input("Entrez la masse du solute (m): "))
-            concentration = float(input("Entrez la concentration en masse (C): "))
-            volume_solution = volume_solution(masse_solute, concentration)
-            print("Le volume de la solution est", volume_solution, "unites de volume.")
+            try:
+                masse_solute = float(input("Entrez la masse du solute (m): "))
+                concentration = float(input("Entrez la concentration en masse (C): "))
+                volume_solution = volume_solution(masse_solute, concentration)
+                print("Le volume de la solution est", volume_solution, "unites de volume.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 29:
-            c_initiale = float(input("Entrez la concentration initiale (C_initiale): "))
-            v_initiale = float(input("Entrez le volume initial (V_initiale): "))
-            v_finale = float(input("Entrez le volume final (V_finale): "))
-            c_finale = concentration_dilution(c_initiale, v_initiale, v_finale)
-            print("La concentration finale est", c_finale, "unites de concentration.")
+            try:
+                c_initiale = float(input("Entrez la concentration initiale (C_initiale): "))
+                v_initiale = float(input("Entrez le volume initial (V_initiale): "))
+                v_finale = float(input("Entrez le volume final (V_finale): "))
+                c_finale = concentration_dilution(c_initiale, v_initiale, v_finale)
+                print("La concentration finale est", c_finale, "unites de concentration.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 30:
-            c_initiale = float(input("Entrez la concentration initiale (C_initiale): "))
-            c_finale = float(input("Entrez la concentration finale (C_finale): "))
-            v_finale = float(input("Entrez le volume final (V_finale): "))
-            v_initiale = volume_initial(c_initiale, v_finale, c_finale)
-            print("Le volume initial est", v_initiale, "unites de volume.")
+            try:
+                c_initiale = float(input("Entrez la concentration initiale (C_initiale): "))
+                c_finale = float(input("Entrez la concentration finale (C_finale): "))
+                v_finale = float(input("Entrez le volume final (V_finale): "))
+                v_initiale = volume_initial(c_initiale, v_finale, c_finale)
+                print("Le volume initial est", v_initiale, "unites de volume.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 31:
-            c_initiale = float(input("Entrez la concentration initiale (C_initiale): "))
-            v_initiale = float(input("Entrez le volume initial (V_initiale): "))
-            c_finale = float(input("Entrez la concentration finale (C_finale): "))
-            v_finale = volume_final(c_initiale, v_initiale, c_finale)
-            print("Le volume final est", v_finale, "unites de volume.")
+            try:
+                c_initiale = float(input("Entrez la concentration initiale (C_initiale): "))
+                v_initiale = float(input("Entrez le volume initial (V_initiale): "))
+                c_finale = float(input("Entrez la concentration finale (C_finale): "))
+                v_finale = volume_final(c_initiale, v_initiale, c_finale)
+                print("Le volume final est", v_finale, "unites de volume.")
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 32:
-            valeur = float(input("Entrez la valeur de la vitesse: "))
-            unite_source = input("Entrez l'unite source (m/s, km/h, mi/h): ")
-            unite_cible = input("Entrez l'unite cible (m/s, km/h, mi/h): ")
-            resultat = convertir_vitesse(valeur, unite_source, unite_cible)
-            print("La vitesse convertie est", resultat, unite_cible)
+            try:
+                valeur = float(input("Entrez la valeur de la vitesse: "))
+                unite_source = input("Entrez l'unite source (m/s, km/h, mi/h): ")
+                unite_cible = input("Entrez l'unite cible (m/s, km/h, mi/h): ")
+                resultat = convertir_vitesse(valeur, unite_source, unite_cible)
+                print("La vitesse convertie est", resultat, unite_cible)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 33:
-            valeur = float(input("Entrez la valeur du temps: "))
-            unite_source = input("Entrez l'unite source (s, min, h): ")
-            unite_cible = input("Entrez l'unite cible (s, min, h): ")
-            resultat = convertir_temps(valeur, unite_source, unite_cible)
-            print("Le temps converti est", resultat, unite_cible)
+            try:
+                valeur = float(input("Entrez la valeur du temps: "))
+                unite_source = input("Entrez l'unite source (s, min, h): ")
+                unite_cible = input("Entrez l'unite cible (s, min, h): ")
+                resultat = convertir_temps(valeur, unite_source, unite_cible)
+                print("Le temps converti est", resultat, unite_cible)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 34:
-            valeur = float(input("Entrez la valeur du volume: "))
-            unite_source = input("Entrez l'unite source (m^3, L, cm^3): ")
-            unite_cible = input("Entrez l'unite cible (m^3, L, cm^3): ")
-            resultat = convertir_volume(valeur, unite_source, unite_cible)
-            print("Le volume converti est", resultat, unite_cible)
+            try:
+                valeur = float(input("Entrez la valeur du volume: "))
+                unite_source = input("Entrez l'unite source (m^3, L, cm^3): ")
+                unite_cible = input("Entrez l'unite cible (m^3, L, cm^3): ")
+                resultat = convertir_volume(valeur, unite_source, unite_cible)
+                print("Le volume converti est", resultat, unite_cible)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 35:
-            valeur = float(input("Entrez la valeur de l'aire: "))
-            unite_source = input("Entrez l'unite source (m^2, cm^2, mm^2): ")
-            unite_cible = input("Entrez l'unite cible (m^2, cm^2, mm^2): ")
-            resultat = convertir_aire(valeur, unite_source, unite_cible)
-            print("L'aire convertie est", resultat, unite_cible)
+            try:
+                valeur = float(input("Entrez la valeur de l'aire: "))
+                unite_source = input("Entrez l'unite source (m^2, cm^2, mm^2): ")
+                unite_cible = input("Entrez l'unite cible (m^2, cm^2, mm^2): ")
+                resultat = convertir_aire(valeur, unite_source, unite_cible)
+                print("L'aire convertie est", resultat, unite_cible)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
         elif choix == 36:
-            valeur = float(input("Entrez la valeur de la masse volumique: "))
-            unite_source = input("Entrez l'unite source (kg/m^3, g/cm^3, mg/mm^3): ")
-            unite_cible = input("Entrez l'unite cible (kg/m^3, g/cm^3, mg/mm^3): ")
-            resultat = convertir_masse_volumique(valeur, unite_source, unite_cible)
-            print("La masse volumique convertie est", resultat, unite_cible)
+            try:
+                valeur = float(input("Entrez la valeur de la masse volumique: "))
+                unite_source = input("Entrez l'unite source (kg/m^3, g/cm^3, mg/mm^3): ")
+                unite_cible = input("Entrez l'unite cible (kg/m^3, g/cm^3, mg/mm^3): ")
+                resultat = convertir_masse_volumique(valeur, unite_source, unite_cible)
+                print("La masse volumique convertie est", resultat, unite_cible)
+            except ValueError:
+                print("Entrée invalide. Veuillez entrer des nombres.")
             input("Appuyez sur 1 pour continuer...")
+        elif choix == 37:
+            valeur = float(input("Entrez la valeur a convertir:"))
+            print("1. Giga")
+            print("2. Méga")
+            print("3. Kilo")
+            print("4. Hecto")
+            print("5. Deca")
+            print("6. Base")
+            print("7. Déci")
+            print("8. centi")
+            print("9. milli")
+            unite_source = input("Entrez l'unitée source:")
+            try:
+                unite_source = int(unite_source)
+            except:
+                print("valeur incorecte")
+            print("1. Giga")
+            print("2. Méga")
+            print("3. Kilo")
+            print("4. Hecto")
+            print("5. Deca")
+            print("6. Base")
+            print("7. Déci")
+            print("8. centi")
+            print("9. milli")
+            unite_cible = input("Entrez l'unitée cible:")
+            try:
+                unite_cible = int(unite_cible)
+            except:
+                print("valeur incorecte")
+            resultat = conv(valeur,unite_cible,unite_source)
+            print("La valeur convertie est :", resultat)
+            input("appuyer sur 1 pour continuer...")
+        elif choix == 38: 
+            print("Pour suggerer quelque chose au developeur, allez sur ce lien :")
+            print(" https://github.com/llv-devpy\n/Formules-physique.py/issues")
+            print(" et creez y un issue.")
+            input("appuyer sur 1 pour continuer...")
+                    
         else:
             print("Choix invalide.")
+            main()
 
 main()
