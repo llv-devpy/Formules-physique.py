@@ -2,7 +2,6 @@
 
 ⚠️ Ce programme risque de ne pas fonctionner correctement hors d'une calculatrice NumWorks.
 
-## A savoir : le build v1.2 (actuellement déployé) est victime d'un bug l'empêchant de fonctionner, nous travaillons actuellement sur le déploiement d'une v1.3 fonctionnelle
 
 Pour l'installer sur votre calculatrice, utilisez [ce lien](https://my.numworks.com/python/maop76698/formules_physique) et suivez les étapes.
 
